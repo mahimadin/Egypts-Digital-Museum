@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Egypt's Digital Museum</title>
+  <meta name="description" content="A digital museum of ancient Egypt. Browse artifacts from the Naqada jars to the Fayum portraits, walk a timeline of eleven eras, visit online exhibitions and write your own name in hieroglyphs.">
+  <meta name="theme-color" content="#07070b">
+  <meta property="og:title" content="Egypt's Digital Museum">
+  <meta property="og:description" content="Five thousand years of Egypt in one open door. Artifacts, timelines and exhibitions.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://upload.wikimedia.org">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Egyptian+Hieroglyphs&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="skip" href="#collection">Skip to the collection</a>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="loader-cartouche" viewBox="0 0 220 90" width="220" height="90">
+    <rect x="6" y="6" width="190" height="78" rx="39" ry="39" pathLength="1"></rect>
+    <line x1="206" y1="14" x2="206" y2="76" pathLength="1"></line>
+  </svg>
+  <p class="loader-text">Opening the archive</p>
+</div>
+
+<div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="Egypt's Digital Museum home">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 4 4 34h32z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M12 26h16M15 20h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="13" r="2.6" fill="currentColor"/>
+      </svg>
+      <span class="brand-text"><span class="brand-line">Egypt's</span><span class="brand-line">Digital Museum</span></span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#collection" data-nav="collection">Collection</a>
+      <a href="#timeline" data-nav="timeline">Timeline</a>
+      <a href="#exhibitions" data-nav="exhibitions">Exhibitions</a>
+      <a href="#cartouche" data-nav="cartouche">Cartouche</a>
+      <a href="#routes" data-nav="routes">Routes</a>
+    </nav>
+
+    <div class="header-tools">
+      <button class="icon-btn" id="paletteBtn" type="button" aria-label="Quick find (Ctrl K)" title="Quick find (Ctrl K)">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <kbd>K</kbd>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch theme" title="Switch theme">
+        <svg class="ico-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="btn btn-small" href="#exhibitions">Plan a visit</a>
+      <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="hero">
+    <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow"><span class="eyebrow-line"></span>Egypt's Digital Museum <span class="arabic" lang="ar">متحف مصر الرقمي</span></p>
+      <h1 class="hero-title">Five thousand years,<br><em>one open door.</em></h1>
+      <p class="hero-lead">Walk the collection from the first painted jars of Naqada to the last portraits of Roman Fayum. Every object photographed, sourced and set on the timeline where it belongs.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#collection">Enter the collection</a>
+        <a class="btn btn-ghost" href="#timeline">Follow the timeline</a>
+      </div>
+      <dl class="stats" id="stats">
+        <div><dt>Objects</dt><dd data-count="0" id="statObjects">0</dd></div>
+        <div><dt>Years</dt><dd data-count="5600" data-suffix="+">0</dd></div>
+        <div><dt>Eras</dt><dd data-count="0" id="statEras">0</dd></div>
+        <div><dt>Exhibitions</dt><dd data-count="0" id="statExhibitions">0</dd></div>
+      </dl>
+    </div>
+    <a class="scroll-cue" href="#spotlight" aria-label="Scroll down"><span></span></a>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee"></div>
+  </div>
+
+  <section class="section spotlight" id="spotlight">
+    <div class="wrap spotlight-grid">
+      <div class="tilt" id="tilt">
+        <figure class="tilt-card">
+          <img id="spotImg" alt="" loading="eager" decoding="async">
+          <div class="tilt-glare"></div>
+          <figcaption class="tilt-cap" id="spotCap"></figcaption>
+        </figure>
+      </div>
+      <div class="spotlight-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span>Object of the day</p>
+        <h2 class="h2" id="spotTitle"></h2>
+        <p class="spot-meta" id="spotMeta"></p>
+        <p class="lead" id="spotText"></p>
+        <div class="spot-actions">
+          <button class="btn btn-primary" id="spotOpen" type="button">Open this object</button>
+          <button class="btn btn-ghost" id="spotShuffle" type="button">Show another</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="collection">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span>The collection</p>
+          <h2 class="h2">Objects that outlived their makers</h2>
+        </div>
+        <p class="lead">Search by name, filter by era or material and open any object for the full record. Use the arrow keys inside a record to move to the next one.</p>
+      </div>
+
+      <div class="toolbar">
+        <label class="search">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="search" id="search" placeholder="Search the collection" autocomplete="off" aria-label="Search the collection">
+          <kbd>/</kbd>
+        </label>
+        <div class="selects">
+          <label class="select">
+            <span>Era</span>
+            <select id="eraSelect" aria-label="Filter by era"><option value="">All eras</option></select>
+          </label>
+          <label class="select">
+            <span>Sort</span>
+            <select id="sortSelect" aria-label="Sort objects">
+              <option value="chrono">Oldest first</option>
+              <option value="chrono-desc">Newest first</option>
+              <option value="az">A to Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>
+        <p class="glyphs">𓂀</p>
+        <p>Nothing in the archive matches that. Try a broader search or clear the filters.</p>
+        <button class="btn btn-ghost" id="clearFilters" type="button">Clear filters</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section timeline" id="timeline">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span>Timeline</p>
+          <h2 class="h2">Eleven eras, end to end</h2>
+        </div>
+        <p class="lead">Drag the track or use the arrows. Longer eras stretch wider across the track and the readout tells you where you are to the year.</p>
+      </div>
+    </div>
+    <div class="tl-shell">
+      <div class="tl-readout">
+        <span class="tl-year" id="tlYear">5000 BCE</span>
+        <span class="tl-era" id="tlEraName">Predynastic</span>
+      </div>
+      <div class="tl-controls">
+        <button class="icon-btn" id="tlPrev" type="button" aria-label="Previous era"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="icon-btn" id="tlNext" type="button" aria-label="Next era"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="tl-scroller" id="tlScroller" tabindex="0" aria-label="Timeline of ancient Egypt, scroll horizontally">
+        <div class="tl-track" id="tlTrack"><div class="tl-inner" id="tlInner"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="exhibitions">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span>Exhibitions</p>
+          <h2 class="h2">On show now and next</h2>
+        </div>
+        <p class="lead">Online rooms with a beginning and an end. Reserve a slot and we will hold it for you. Dates and countdowns update live.</p>
+      </div>
+      <div class="exhibit-grid" id="exhibitGrid"></div>
+    </div>
+  </section>
+
+  <section class="section cartouche" id="cartouche">
+    <div class="wrap cartouche-grid">
+      <div class="cartouche-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span>Cartouche maker</p>
+        <h2 class="h2">Write your name the way a scribe would</h2>
+        <p class="lead">Royal names were sealed inside an oval rope called a cartouche. Type a name and the signs are matched sound by sound from the uniliteral alphabet.</p>
+        <form class="cartouche-form" id="cartoucheForm">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" id="cartName" maxlength="14" value="Nefertari" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="field-row">
+            <fieldset class="seg" id="cartDir">
+              <legend>Direction</legend>
+              <label><input type="radio" name="dir" value="h" checked><span>Across</span></label>
+              <label><input type="radio" name="dir" value="v"><span>Down</span></label>
+            </fieldset>
+            <fieldset class="seg" id="cartMat">
+              <legend>Material</legend>
+              <label><input type="radio" name="mat" value="gold" checked><span>Gold</span></label>
+              <label><input type="radio" name="mat" value="lapis"><span>Lapis</span></label>
+              <label><input type="radio" name="mat" value="stone"><span>Stone</span></label>
+            </fieldset>
+          </div>
+          <div class="cart-actions">
+            <button class="btn btn-primary" type="button" id="cartDownload">Download PNG</button>
+            <button class="btn btn-ghost" type="button" id="cartCopy">Copy signs</button>
+          </div>
+        </form>
+        <ol class="legend" id="cartLegend" aria-label="Signs used"></ol>
+      </div>
+      <div class="cartouche-stage" id="cartStage"></div>
+    </div>
+  </section>
+
+  <section class="section routes" id="routes">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span>Curated routes</p>
+          <h2 class="h2">Short walks through the archive</h2>
+        </div>
+        <p class="lead">Pick a theme and the museum opens each object in turn. Ten minutes, no map required.</p>
+      </div>
+      <div class="route-grid" id="routesGrid"></div>
+    </div>
+  </section>
+
+  <section class="section visit" id="visit">
+    <div class="wrap visit-grid">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-line"></span>Visit</p>
+        <h2 class="h2">Always open</h2>
+        <p class="lead">There is no queue and no closing bell. The museum lives in your browser and reads well on a phone held in one hand.</p>
+        <ul class="visit-list">
+          <li><strong>Hours</strong><span>24 hours, every day</span></li>
+          <li><strong>Admission</strong><span>Free, no account needed</span></li>
+          <li><strong>Languages</strong><span>English, with Arabic labels coming</span></li>
+          <li><strong>Accessibility</strong><span>Keyboard navigation, reduced motion and high contrast text</span></li>
+        </ul>
+      </div>
+      <form class="newsletter" id="newsletter" novalidate>
+        <h3 class="h3">New objects, first</h3>
+        <p>One note a month when something new enters the archive. No tracking, unsubscribe any time.</p>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" id="newsEmail" placeholder="you@example.com" required>
+        </label>
+        <button class="btn btn-primary" type="submit">Keep me posted</button>
+        <p class="form-note" id="newsNote" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <p class="footer-glyphs" aria-hidden="true">𓋹 𓊽 𓌀</p>
+      <p>Egypt's Digital Museum is an independent, non commercial project. It is not affiliated with any museum or ministry.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="#collection">Collection</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#exhibitions">Exhibitions</a>
+      <a href="#routes">Routes</a>
+    </div>
+    <div>
+      <h4>Tools</h4>
+      <a href="#cartouche">Cartouche maker</a>
+      <button class="link-btn" type="button" data-open-palette>Quick find</button>
+      <button class="link-btn" type="button" data-theme-toggle>Switch theme</button>
+    </div>
+    <div>
+      <h4>Credits</h4>
+      <p class="small">Photographs come from Wikimedia Commons under public domain, CC0 or Creative Commons licences. Each record links to its source and photographer.</p>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>©mahimawijesinghe</span>
+    <button class="to-top" id="toTop" type="button" aria-label="Back to top">↑</button>
+  </div>
+</footer>
+
+<dialog class="modal" id="modal" aria-labelledby="mTitle">
+  <div class="modal-inner">
+    <button class="modal-close icon-btn" id="mClose" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-media">
+      <img id="mImg" alt="">
+      <div class="modal-route" id="mRoute" hidden></div>
+    </div>
+    <div class="modal-body">
+      <p class="eyebrow"><span class="eyebrow-line"></span><span id="mEra"></span></p>
+      <h2 class="h2" id="mTitle"></h2>
+      <p class="modal-date" id="mDate"></p>
+      <p class="modal-lead" id="mSummary"></p>
+      <p class="modal-story" id="mStory"></p>
+      <dl class="prov" id="mProv"></dl>
+      <ul class="facts" id="mFacts"></ul>
+      <p class="modal-glyphs" id="mGlyphs" aria-hidden="true"></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-small" id="mShare" type="button">Copy link</button>
+        <a class="btn btn-ghost btn-small" id="mSource" href="#" target="_blank" rel="noopener">Photo source</a>
+      </div>
+      <div class="related">
+        <h3 class="h3">Same era</h3>
+        <div class="related-row" id="mRelated"></div>
+      </div>
+    </div>
+    <div class="modal-nav">
+      <button class="icon-btn" id="mPrev" type="button" aria-label="Previous object"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span id="mPos"></span>
+      <button class="icon-btn" id="mNext" type="button" aria-label="Next object"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="palette" id="palette" aria-label="Quick find">
+  <form class="palette-form" id="paletteForm">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="text" id="paletteInput" placeholder="Jump to an object, era or room" autocomplete="off" aria-label="Quick find">
+    <kbd>esc</kbd>
+  </form>
+  <ul class="palette-list" id="paletteList" role="listbox"></ul>
+  <p class="palette-hint">↑ ↓ to move, enter to open</p>
+</dialog>
+
+<dialog class="booking" id="booking" aria-labelledby="bTitle">
+  <form class="booking-form" id="bookingForm" novalidate>
+    <button class="modal-close icon-btn" type="button" id="bClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <p class="eyebrow"><span class="eyebrow-line"></span>Reserve a slot</p>
+    <h2 class="h3" id="bTitle"></h2>
+    <p class="small" id="bDates"></p>
+    <div class="field-row">
+      <label class="field"><span>Date</span><input type="date" id="bDate" required></label>
+      <label class="field"><span>Visitors</span><input type="number" id="bCount" min="1" max="8" value="2" required></label>
+    </div>
+    <label class="field"><span>Name</span><input type="text" id="bName" required autocomplete="name"></label>
+    <label class="field"><span>Email</span><input type="email" id="bEmail" required autocomplete="email"></label>
+    <p class="form-note" id="bNote" aria-live="polite"></p>
+    <div class="booking-actions">
+      <button class="btn btn-primary" type="submit">Hold my place</button>
+      <span class="small">Demo only. Nothing leaves your browser.</span>
+    </div>
+  </form>
+  <div class="booking-done" id="bookingDone" hidden>
+    <p class="glyphs">𓋹</p>
+    <h2 class="h3">You are on the list</h2>
+    <p id="bDoneText"></p>
+    <p class="code" id="bCode"></p>
+    <button class="btn btn-ghost" type="button" id="bDoneClose">Close</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
