@@ -378,14 +378,14 @@
 
     function frame() {
       if (!running) return;
-      t += reduced ? 0 : 1 / 60;
+      t += 1 / 60; // always advance time so pyramid rotates
       eased.x += (mouse.x - eased.x) * 0.04;
       eased.y += (mouse.y - eased.y) * 0.04;
       ctx.clearRect(0, 0, w, h);
       drawGrid();
-      drawParticles();
+      if (!reduced) drawParticles(); // respect reduced-motion for particles only
       drawPyramid();
-      if (!reduced) requestAnimationFrame(frame);
+      requestAnimationFrame(frame); // always keep the loop alive
     }
 
     const hero = $('#hero');
@@ -404,8 +404,8 @@
     });
     io.observe(hero);
 
-    window.addEventListener('resize', () => { resize(); if (reduced) frame(); });
-    window.addEventListener('themechange', () => { readColors(); if (reduced) frame(); });
+    window.addEventListener('resize', () => { resize(); });
+    window.addEventListener('themechange', () => { readColors(); });
     resize();
     requestAnimationFrame(frame);
   }
